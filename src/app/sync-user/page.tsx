@@ -17,6 +17,10 @@ const SyncUser = async () => {
         where: { email: "wakulkaradvait@gmail.com" }, 
         update: { firstName: "Advait", lastName: "Wakulkar" },
         create: { email: "wakulkaradvait@gmail.com", firstName: "Advait", lastName: "Wakulkar" }
+      }).then(result => {
+        console.log(result)
+      }).catch(err => {
+        console.error(err)
       })
     console.log('yes')
       
