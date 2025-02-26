@@ -17,8 +17,8 @@ export default function Dashboard() {
 
   return (
     <div>
-      <h1>Dashboard</h1>
-      {isSignedIn ? <p>Welcome, {user?.firstName}!</p> : <p>Not signed in</p>}
+      <div>{user?.firstName}</div>
+      <div>{user?.lastName}</div>
     </div>
   );
 }
