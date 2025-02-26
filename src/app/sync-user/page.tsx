@@ -12,11 +12,13 @@ const SyncUser = async () => {
     if(!user.emailAddresses[0]?.emailAddress) {
         return notFound()
     }
+    console.log('yes')
     db.user.upsert({
-        where: { email: "wakulkaradvait@gmail.com" }, // ✅ Use "email"
+        where: { email: "wakulkaradvait@gmail.com" }, 
         update: { firstName: "Advait", lastName: "Wakulkar" },
         create: { email: "wakulkaradvait@gmail.com", firstName: "Advait", lastName: "Wakulkar" }
       })
+    console.log('yes')
       
       
   return redirect('/dashboard')
