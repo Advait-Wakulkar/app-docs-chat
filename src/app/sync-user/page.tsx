@@ -12,17 +12,23 @@ const SyncUser = async () => {
     if(!user.emailAddresses[0]?.emailAddress) {
         return notFound()
     }
-    console.log('yes')
-    db.user.upsert({
-        where: { email: "wakulkaradvait@gmail.com" }, 
-        update: { firstName: "Advait", lastName: "Wakulkar" },
-        create: { email: "wakulkaradvait@gmail.com", firstName: "Advait", lastName: "Wakulkar" }
-      }).then(result => {
-        console.log(result)
-      }).catch(err => {
-        console.error(err)
-      })
-    console.log('yes')
+    console.log('User found, syncing to DB...');
+    try {
+      const result = await db.user.upsert({
+          where: { email : user.emailAddresses[0]?.emailAddress ?? ""}, 
+          update: { firstName: user.firstName, lastName: user.lastName },
+          create: { 
+            id: userId,
+            email : user.emailAddresses[0]?.emailAddress ?? "",
+            firstName: user.firstName, 
+            lastName: user.lastName
+           }
+      });
+      console.log('DB Sync Result:', result);
+  } catch (err) {
+      console.error('DB Sync Error:', err);
+  }
+    console.log('Redirecting to dashboard...');
       
       
   return redirect('/dashboard')
