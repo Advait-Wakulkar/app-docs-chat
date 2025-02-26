@@ -13,39 +13,47 @@ export async function GET() {
   // Get user's information
   const user = await currentUser();
   if (!user) {
-    return new NextResponse('User not exist', { status: 404 });
+    return new NextResponse('User not found', { status: 404 });
   }
 
-  let dbUser = await prisma.user.findUnique({
-    where: { clerkId: user.id },
-  });
-
-  if (!dbUser) {
-    dbUser = await prisma.user.create({
-      data: {
-        clerkId: user.id,
-        name: user.firstName ?? '',
-        lastName: user.lastName ?? '',
-        email: user.emailAddresses[0].emailAddress ?? '',
-      },
+  try {
+    // Check if user exists in the database
+    let dbUser = await prisma.user.findUnique({
+      where: { clerkId: user.id },
     });
-  }
 
-  if (!dbUser) {
+    if (!dbUser) {
+      // Create user if they don't exist
+      dbUser = await prisma.user.create({
+        data: {
+          clerkId: user.id,
+          name: user.firstName ?? '',
+          lastName: user.lastName ?? '',
+          email: user.emailAddresses[0].emailAddress ?? '',
+        },
+      });
+      console.log('User created in database:', dbUser.id);
+    } else {
+      // Update user if their Clerk info has changed
+      dbUser = await prisma.user.update({
+        where: { id: dbUser.id },
+        data: {
+          name: user.firstName ?? dbUser.name,
+          lastName: user.lastName ?? dbUser.lastName,
+          email: user.emailAddresses[0].emailAddress ?? dbUser.email,
+        },
+      });
+      console.log('User updated in database:', dbUser.id);
+    }
+
     return new NextResponse(null, {
-      status: 302, // 302 Found - temporary redirect
+      status: 302,
       headers: {
-        Location: 'https://go.bradi.tech/api/auth/new-user',
+        Location: 'https://go.bradi.tech/dashboard',
       },
     });
+  } catch (error) {
+    console.error('Error syncing user:', error);
+    return new NextResponse('Error syncing user', { status: 500 });
   }
-  // Perform your Route Handler's logic with the returned user object
-
-  return new NextResponse(null, {
-    status: 302, // 302 Found - temporary redirect
-    headers: {
-      Location: 'https://go.bradi.tech/dashboard',
-    },
-  });
-
 }
