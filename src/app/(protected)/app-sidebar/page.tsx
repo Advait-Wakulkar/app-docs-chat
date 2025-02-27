@@ -59,7 +59,7 @@ const projects = [
 ]
 
 const AppSidebar = () => {
-    const {pathname} = usePathname()
+    const pathname = usePathname()
     const {open} = useSidebar()
     return (
         <Sidebar collapsible='icon' variant='floating'>
