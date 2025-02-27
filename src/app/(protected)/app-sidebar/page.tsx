@@ -1,3 +1,5 @@
+'use client'
+
 import { 
     Sidebar, 
     SidebarContent, 
@@ -7,7 +9,8 @@ import {
     SidebarHeader, 
     SidebarMenu, 
     SidebarMenuButton, 
-    SidebarMenuItem 
+    SidebarMenuItem, 
+    useSidebar
 } from '@/components/ui/sidebar'
 import { 
     BotIcon, 
@@ -22,6 +25,7 @@ import clsx from 'clsx';  // If you're using clsx
 import path from 'path';
 import { Button } from '@/components/ui/button';
 import Image from 'next/image';
+import { usePathname } from 'next/navigation';
 
 const items = [
     {
@@ -55,11 +59,16 @@ const projects = [
 ]
 
 const AppSidebar = () => {
+    const {pathname} = usePathname()
+    const {open} = useSidebar()
     return (
         <Sidebar collapsible='icon' variant='floating'>
             <SidebarHeader>
                 <div className='flex items-center gap-2'>
                     <Image src={'/logo.png'} alt='logo' height={40} width={40}></Image>
+                    {open && (
+                        <h1 className='text-xl font-bold text-primary/80'></h1>
+                    )}
                 </div>
             </SidebarHeader>
             <SidebarContent>
@@ -77,7 +86,7 @@ const AppSidebar = () => {
                                             <Link 
                                                 href={item.url}
                                                 className={clsx(
-                                                    { '!bg-primary !text-white': path === item.url },
+                                                    { '!bg-primary !text-white': pathname === item.url },
                                                     'list-none flex items-center gap-2 px-2 py-1 hover:text-black'
                                                 )}
                                             >
