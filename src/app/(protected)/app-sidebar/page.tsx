@@ -65,7 +65,7 @@ const AppSidebar = () => {
         <Sidebar collapsible='icon' variant='floating'>
             <SidebarHeader>
                 <div className='flex items-center gap-2'>
-                    <Image src={'/logo.png'} alt='logo' height={40} width={40}></Image>
+                    <Image src={'/logo.png'} alt='Logo' height={40} width={40}></Image>
                     {open && (
                         <h1 className='text-xl font-bold text-primary/80'></h1>
                     )}
@@ -124,9 +124,9 @@ const AppSidebar = () => {
                         })}
                     <div className='h-2'></div>
                         <SidebarMenuItem>
-                            <Link href={'/create'}>                            
+                            {open && (<Link href={'/create'}>                            
                                 <Button size={'sm'} className='w-fit'><Plus></Plus>Create Project</Button>
-                            </Link>
+                            </Link>) }
                         </SidebarMenuItem>
                     </SidebarMenu>
                 </SidebarGroup>
