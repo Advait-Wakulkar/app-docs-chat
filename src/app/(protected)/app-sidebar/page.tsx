@@ -21,6 +21,7 @@ import React from 'react'
 import clsx from 'clsx';  // If you're using clsx
 import path from 'path';
 import { Button } from '@/components/ui/button';
+import Image from 'next/image';
 
 const items = [
     {
@@ -47,17 +48,19 @@ const items = [
 
 const projects = [
     { name: "Project_1" },
-    { name: "Project_1" },
-    { name: "Project_1" },
-    { name: "Project_1" },
-    { name: "Project_1" }
+    { name: "Project_2" },
+    { name: "Project_3" },
+    { name: "Project_4" },
+    { name: "Project_5" }
 ]
 
 const AppSidebar = () => {
     return (
         <Sidebar collapsible='icon' variant='floating'>
             <SidebarHeader>
-                Logo
+                <div className='flex items-center gap-2'>
+                    <Image src={'/logo.png'} alt='logo' height={40} width={40}></Image>
+                </div>
             </SidebarHeader>
             <SidebarContent>
                 {/* Application Section */}
