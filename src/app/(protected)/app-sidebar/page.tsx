@@ -101,23 +101,26 @@ const AppSidebar = () => {
           <SidebarGroupLabel>Projects</SidebarGroupLabel>
           <SidebarMenu>
             {/* Make sure projects exists before trying to map over it */}
-            {Array.isArray(projects) && projects.map((project, index) => {
-              return (
-                <SidebarMenuItem key={index}>
-                  <SidebarMenuButton asChild>
-                    <div>
-                      <div className={clsx(
-                        'rounded-sm border size-6 flex items-center justify-center text-sm bg-white text-primary',
-                        { 'bg-primary text-white': project.id === projectId }
-                      )}>
-                        {project.name[0]}
-                      </div>
-                      <span>{project.name}</span>
-                    </div>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              )
-            })}
+            {Array.isArray(projects) ? (
+                projects.map((project, index) => (
+                    <SidebarMenuItem key={index}>
+                    <SidebarMenuButton asChild>
+                        <div onClick={() => setProjectId(project.id)}>
+                        <div className={clsx(
+                            'rounded-sm border size-6 flex items-center justify-center text-sm bg-white text-primary',
+                            { 'bg-primary text-white': project.id === projectId }
+                        )}>
+                            {project.name[0]}
+                        </div>
+                        <span>{project.name}</span>
+                        </div>
+                    </SidebarMenuButton>
+                    </SidebarMenuItem>
+                ))
+                ) : (
+                <p className="text-gray-500 px-2">No projects found</p>
+                )}
+
             <div className='h-2'></div>
             <SidebarMenuItem>
               {open && (<Link href={'/create'}>                            
