@@ -1,24 +1,33 @@
-"use client"; // This tells Next.js that this component should run on the client
+"use client";
 
-import { useEffect } from "react";
-import { useAuth, useUser } from "@clerk/nextjs";
-import { useRouter } from "next/navigation";
+import useProject from "@/hooks/use-project";
+import { ExternalLink, Github, Link } from "lucide-react";
 
 export default function Dashboard() {
-  const { isSignedIn } = useAuth();
-  const { user } = useUser();
-  const router = useRouter();
+  const { project } = useProject();
 
-  useEffect(() => {
-    if (isSignedIn === undefined) {
-      router.refresh(); // Forces a re-fetch of authentication state
-    }
-  }, [isSignedIn, router]);
+  console.log("Project data:", project); // Debugging log
+
+  if (!project) {
+    return <p className="text-white">Loading project...</p>;
+  }
 
   return (
     <div>
-      <div>{user?.firstName}</div>
-      <div>{user?.lastName}</div>
-    </div>
+      <div className="flex items-center justify-between flex-wrap gap-y-4">
+        <Github className="size text-white" />
+        <div className="ml-2">
+          <p className="text-sm font-medium text-white">
+            This project is linked to{" "}
+            <Link
+              href={project?.githubUrl ?? "#"}
+              className="inline-flex items-center text-white/80 hover:underline">
+              {project?.name || "Unnamed Project"}
+              <ExternalLink className="ml-1 size-4"></ExternalLink>
+            </Link>
+          </p>
+        </div>
+      </div>
+    </div> 
   );
 }
